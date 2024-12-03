@@ -1,5 +1,10 @@
-function App() {
-  return <h1>Hello World!</h1>;
-}
+import Post from "./components/post";
 
-export default App;
+export default function App() {
+  return (
+    <>
+      <h1>Welcome to this couse first App</h1>
+      <Post />
+    </>
+  )
+}
