@@ -1,8 +1,12 @@
-export default function Post() {
+import classes from  './Post.module.css';
+
+const names = ['Max', 'Fab'];
+
+export default function Post({name, text}) {
   return (
-    <div>
-        <p>Fabio</p>
-        <p>Learning react!</p>
-    </div>
+    <li className={classes.post}>
+        <p className={classes.author}>{name}</p>
+        <p className={classes.text}>{text}</p>
+    </li>
   );
 }
