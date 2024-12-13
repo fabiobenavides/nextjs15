@@ -22,7 +22,7 @@ export default function PostList() {
       {posts.length > 0 && 
           <ul className={classes.posts}>
           {posts.map((item) => (
-            <Post key={item.body} name={item.author} text={item.body}/>
+            <Post key={item.id} id={item.id} name={item.author} text={item.body}/>
           ))}
         </ul>
       }
