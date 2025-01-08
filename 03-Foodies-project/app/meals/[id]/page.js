@@ -1,10 +1,15 @@
 import Image from 'next/image'
 import classes from './page.module.css'
 import { getMealDetails } from '@/lib/meals'
+import { notFound } from 'next/navigation';
 
 export default function MealDetail({ params }) {
 
-  const mealDetails = getMealDetails( params.id);
+  const mealDetails = getMealDetails(params.id);
+
+  if (!mealDetails) {
+    notFound();
+  }
 
   mealDetails.instructions = mealDetails.instructions.replace(/\n/g, '<br />');
 
