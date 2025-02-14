@@ -8,8 +8,6 @@ export default function NewsDetails({ params }) {
   if (!details) {
     notFound();
   }
-    
-  
 
   return (
     <article className='news-article'>
