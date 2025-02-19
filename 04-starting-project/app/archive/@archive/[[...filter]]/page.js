@@ -24,6 +24,11 @@ export default function ArchiveYear({params}) {
       news = getNewsForYearAndMonth(selectedYear, selectedMonth);
     }
 
+    if (selectedYear && !links.includes(+selectedYear) 
+      || selectedMonth && !months.includes(+selectedMonth)) {
+        throw new Error('Invalid filter');
+    }
+
     return (
       <>
         <header id="archive-header">
