@@ -9,7 +9,7 @@ export default function ArchiveYear({params}) {
     var news = '';
     var months = '';
 
-    console.log(filter);
+    //console.log(filter);
 
     const selectedYear = filter?.[0];
     const selectedMonth = filter?.[1];

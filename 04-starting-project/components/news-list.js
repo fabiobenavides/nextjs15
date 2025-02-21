@@ -1,10 +1,11 @@
 import Link from "next/link";
 
 export default function NewsList({news}) {
+  //console.log(news);
   return (
     <ul className='news-list'>
         {news.map((item) =>
-        <li key={item} >
+        <li key={item.id} >
             <Link href={`/news/${item.slug}`}>
             <img
                 src={`/images/news/${item.image}`} 
