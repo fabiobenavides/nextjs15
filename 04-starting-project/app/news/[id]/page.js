@@ -5,7 +5,9 @@ import React from 'react'
 
 export default function NewsDetails({ params }) {
 
-  const details = DUMMY_NEWS.find(item => item.slug === params.id);
+  const selectedItem = React.use(params);
+  //console.log(params);
+  const details = DUMMY_NEWS.find(item => item.slug === selectedItem.id);
   if (!details) {
     notFound();
   }
