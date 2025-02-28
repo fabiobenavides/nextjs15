@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 //run in any request 
 export function middleware(request) {
-    console.log(request);
+    //console.log(request);
 
     return NextResponse.next();
 }
