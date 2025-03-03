@@ -1,10 +1,12 @@
 import NewsList from '@/components/news-list'
 import { getAvailableNewsMonths, getAvailableNewsYears, getNewsForYear, getNewsForYearAndMonth } from '@/lib/news';
 import Link from 'next/link';
+import React from 'react';
 
-export default function ArchiveYear({params}) {
+export default async function ArchiveYear({params}) {
 
-    const links = getAvailableNewsYears();
+    //const filters = React.use(params);
+    const links = await getAvailableNewsYears();
     const filter = params.filter;
     var news = '';
     var months = '';
@@ -15,17 +17,17 @@ export default function ArchiveYear({params}) {
     const selectedMonth = filter?.[1];
 
     if (selectedYear) {
-      news = getNewsForYear(selectedYear);
+      news = await getNewsForYear(selectedYear);
       months = getAvailableNewsMonths(selectedYear);
     }
 
     if (selectedMonth)
     {
-      news = getNewsForYearAndMonth(selectedYear, selectedMonth);
+      news = await getNewsForYearAndMonth(selectedYear, selectedMonth);
     }
 
-    if (selectedYear && !links.includes(+selectedYear) 
-      || selectedMonth && !months.includes(+selectedMonth)) {
+    if (selectedYear && !links.includes(selectedYear) 
+      || selectedMonth && !months.includes(selectedMonth)) {
         throw new Error('Invalid filter');
     }
 

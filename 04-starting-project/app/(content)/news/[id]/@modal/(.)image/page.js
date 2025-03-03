@@ -1,21 +1,19 @@
-"use client"
+import ModalBackdrop from "@/components/modal-backdrop";
+import { getNewsItem } from "@/lib/news";
+import { notFound } from "next/navigation";
+import React from "react";
 
-import { DUMMY_NEWS } from "@/dummy-news";
-import { notFound, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
-
-export default function NewImage({params}) {
-
-    const router = useRouter();
-    const selectedItem = React.use(params);
-    const details = DUMMY_NEWS.find(item => item.slug === selectedItem.id);
+export default async function NewImage({params}) {
+    
+    //const selectedItem = React.use(params);
+    const details = await getNewsItem(params.id);
     if (!details) {
         notFound();
     }
 
   return (
     <>
-        <div className="modal-backdrop" onClick={router.back}/>
+        <ModalBackdrop />
         <dialog className="modal" open>
             <div className="fullscreen-image">
                 <img src={`/images/news/${details.image}`} alt={details.title} />
