@@ -1,0 +1,3 @@
+If you have code that must never end up on the client-side (no matter if it's a server action or not), you should instead use the server-only package as described here.
+
+https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns#keeping-server-only-code-out-of-the-client-environment
