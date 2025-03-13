@@ -6,3 +6,5 @@ https://nextjs.org/docs/app/building-your-application/rendering/composition-patt
 Running Prod mode:
 npm run build
 npm start
+
+Prod code: ./next folder
