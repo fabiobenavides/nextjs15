@@ -43,5 +43,7 @@ export async function createPost(prevState, formData) {
         userId: 1
     });
 
+    //update cache, revalidate all pages
+    revalidatePath('/', 'layout');
     redirect('/feed');
 }
