@@ -14,3 +14,12 @@ Prod code: ./next folder
 
 Next 15+ cache is less agressive
 
+Way to control the cache:
+
+1- In the specific fetch
+const response = await fetch('http://localhost:8080/messages', {
+    //cache: 'no-store', //next 14 default 'force-cache' -- next 15 default 'no-store' less agressive
+    next: {
+      revalidate: 5 //seconds for next revalidate cache
+    }
+  });
