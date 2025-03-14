@@ -8,3 +8,6 @@ npm run build
 npm start
 
 Prod code: ./next folder
+
+
+4 types of cache: https://nextjs.org/docs/app/building-your-application/caching
