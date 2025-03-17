@@ -18,8 +18,27 @@ Way to control the cache:
 
 1- In the specific fetch
 const response = await fetch('http://localhost:8080/messages', {
-    //cache: 'no-store', //next 14 default 'force-cache' -- next 15 default 'no-store' less agressive
+    //cache: 'no-store', //next 14 default 'force-cache' -- next 15 default 'no-store' less agressive OR
     next: {
       revalidate: 5 //seconds for next revalidate cache
     }
   });
+
+2- export variables any of these 2:
+
+export const revalidate = 5; //revalidate for the entire page in case there are multiples request
+export const dynamic = 'force-dynamic'; //'force-dynamic' same as fetch: cache: 'no-store'
+
+3- Inside a component function
+
+unstable_noStore(); //same as no-store
+
+
+4- revalidatePath or revalidateTag
+revalidatePath('/messages'); //This is better, more efficient, for nested content: add a second parameter: , 'layout' 
+
+revalidateTag('msg'); //if you assign tags to the request
+Example:
+const response = await fetch('http://localhost:8080/messages', {
+  next: {tags: ['msg', 'msg2']}
+});
