@@ -42,3 +42,11 @@ Example:
 const response = await fetch('http://localhost:8080/messages', {
   next: {tags: ['msg', 'msg2']}
 });
+
+5- cache react function
+
+example:
+export const getMessages = cache(function getMessages() {
+  console.log('Fetching messages from db');
+  return db.prepare('SELECT * FROM messages').all();
+});
