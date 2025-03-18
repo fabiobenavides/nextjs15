@@ -24,7 +24,11 @@ export const getMessages = nextCache(  // this cache is make this date cachable 
   cache(function getMessages() {
     console.log('Fetching messages from db');
     return db.prepare('SELECT * FROM messages').all();
-  }), ['messages'] // any way to identify this cache
+  }),
+  ['messages'], // any way to identify this cache
+  {
+    tags: ['msg'],
+  }  
 );
 
 
