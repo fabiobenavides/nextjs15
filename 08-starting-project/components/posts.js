@@ -1,16 +1,28 @@
 "use client";
 
 import { useOptimistic } from 'react';
-
 import { formatDate } from '@/lib/format';
 import LikeButton from './like-icon';
 import { togglePostLikeStatus } from '@/actions/posts';
+import Image from 'next/image';
+
+function imageLoader(config) {
+  //console.log(config);
+  //this is only for cloundinary, other provider will be diff
+  // this code is requesting cloundinary to generate a image with these specification
+  // in that way the image will be smaller and optimize at cloundinary and we download 
+  // a smaller and optimized image to display
+  const srcStart = config.src.split('upload/')[0];
+  const srcEnd = config.src.split('upload/')[1];
+  const transformation = `w_200,q_${config.quality}`
+  return `${srcStart}upload/${transformation}/${srcEnd}`;
+}
 
 function Post({ post, action }) {
   return (
     <article className="post">
       <div className="post-image">
-        <img src={post.image} alt={post.title} />
+        <Image loader={imageLoader} src={post.image} fill alt={post.title} quality={50} />
       </div>
       <div className="post-content">
         <header>
