@@ -50,3 +50,16 @@ export const getMessages = cache(function getMessages() {
   console.log('Fetching messages from db');
   return db.prepare('SELECT * FROM messages').all();
 });
+
+
+
+FORMs
+
+nextjs 14:
+
+useFormState
+
+
+nextjs 15:
+
+useActionState
