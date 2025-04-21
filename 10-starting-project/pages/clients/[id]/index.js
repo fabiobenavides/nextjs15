@@ -10,7 +10,7 @@ export default function ClientProjects() {
         // router.push('/clients/[id]/[clientprojectid]', '/clients/max/project-a')
         router.push({
             pathname: '/clients/[id]/[clientprojectid]',
-            query: { id: 'max', clientprojectid: 'project-a' }
+            query: { id: 'max', clientProjectId: 'project-a' }
         })
     }
 
