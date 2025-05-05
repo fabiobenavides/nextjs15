@@ -7,6 +7,7 @@ export default function index() {
 
   return (
     <div>
+      
       <EventList items={featuredEvents} />
     </div>
   )

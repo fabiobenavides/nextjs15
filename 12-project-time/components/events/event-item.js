@@ -1,5 +1,5 @@
 import styles from './event-item.module.css';
-import Button from "../ui/button";
+import ButtonLink from "../ui/button-link";
 import DateIcon from '../icons/date-icon';
 import AddressIcon from '../icons/address-icon';
 import ArrowRightIcon from '../icons/arrow-right-icon';
@@ -31,12 +31,12 @@ export default function EventItem(props) {
                 </div>
             </div>
             <div className={styles.actions}>
-                <Button link={`/events/${event.id}`}>
+                <ButtonLink link={`/events/${event.id}`}>
                     <span>Explore Event</span>
                     <span className={styles.icon}>
                         <ArrowRightIcon />
                     </span>
-                </Button>
+                </ButtonLink>
             </div>
         </div>
     </li>
