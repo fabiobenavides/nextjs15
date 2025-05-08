@@ -1,6 +1,10 @@
 import { useRouter } from "next/router";
 import { getFilteredEvents } from "../../dummy-data";
 import EventList from "../../components/events/event-list";
+import { Fragment } from "react";
+import ResultsTitle from "../../components/events/results-title";
+import ButtonLink from "../../components/ui/button-link";
+import ErrorAlert from "../../components/ui/error-alert";
 
 export default function CatchAllPage() {
 
@@ -17,7 +21,16 @@ export default function CatchAllPage() {
     const numMonth = +filteredMonth;
 
     if (isNaN(numYear) || isNaN(numMonth) || numYear < 2021 || numYear > 2022 || numMonth < 1 || numMonth > 12) {
-        return <p className="center">Invalid filter. Please adjust your values!</p>;
+        return (
+          <Fragment>
+            <ErrorAlert>
+              <p>Invalid filter. Please adjust your values!</p>
+            </ErrorAlert>
+            <div className="center">
+              <ButtonLink link="/events">Show all events</ButtonLink>
+            </div>
+          </Fragment>
+        );
     }
 
     const filteredEvents = getFilteredEvents({
@@ -26,11 +39,24 @@ export default function CatchAllPage() {
     });
 
     if (!filteredEvents || filteredEvents.length === 0) {
-        return <p className="center">No events found for the chosen filter!</p>;
+        return (
+          <Fragment>
+            <ErrorAlert>
+              <p>No events found for the chosen filter!</p>
+            </ErrorAlert>
+            <div className="center">
+              <ButtonLink link="/events">Show all events</ButtonLink>
+            </div>
+          </Fragment>
+        );
     }
     console.log("filteredEvents:", filteredEvents);
     
   return (
-    <EventList items={filteredEvents} />
+    <Fragment>
+        <ResultsTitle date={new Date(numYear, numMonth - 1)} />
+        <EventList items={filteredEvents} />
+    </Fragment>
+    
   )
 }

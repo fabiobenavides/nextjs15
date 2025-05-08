@@ -4,6 +4,8 @@ import { Fragment } from 'react';
 import EventSummary from '../../../components/event-detail/event-summary';
 import EventLogistics from '../../../components/event-detail/event-logistics';
 import EventContent from '../../../components/event-detail/event-content';
+import ErrorAlert from '../../../components/ui/error-alert';
+import ButtonLink from '../../../components/ui/button-link';
 
 export default function index() {
 
@@ -12,7 +14,16 @@ export default function index() {
 
     const details = getEventById(id);
     if (!details) {
-        return <p>No event found!</p>
+        return (
+          <Fragment>
+            <ErrorAlert>
+              <p>No event found!</p>
+            </ErrorAlert>
+            <div className="center">
+              <ButtonLink link="/events">Show all events</ButtonLink>
+            </div>
+          </Fragment>
+        );
     }
 
   return (
