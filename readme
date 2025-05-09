@@ -1,3 +1,4 @@
+
 If you have code that must never end up on the client-side (no matter if it's a server action or not), you should instead use the server-only package as described here.
 
 https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns#keeping-server-only-code-out-of-the-client-environment
@@ -53,13 +54,16 @@ export const getMessages = cache(function getMessages() {
 
 
 
-FORMs
+FORMs:
 
-nextjs 14:
+  nextjs 14:
+  useFormState
 
-useFormState
+  nextjs 15:
+  useActionState
 
 
-nextjs 15:
+getStaticProps:
+  This will run on the server at build time, and the result will be cached for the lifetime of the app. 
+  This is useful for data that doesn't change often, like a blog post or a product page.
 
-useActionState
