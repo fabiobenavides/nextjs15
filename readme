@@ -66,4 +66,5 @@ FORMs:
 getStaticProps:
   This will run on the server at build time, and the result will be cached for the lifetime of the app. 
   This is useful for data that doesn't change often, like a blog post or a product page.
+  You can add a revalidate property to the returned object to specify how often the page should be re-generated.
 
