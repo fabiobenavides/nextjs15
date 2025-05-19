@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { getData } from '../utils/data';
+import { getData } from '../../utils/data';
 import { useRouter } from 'next/router';
 
 export default function ProductDetail(props) {
