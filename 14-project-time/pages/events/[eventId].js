@@ -1,43 +1,12 @@
-import { Fragment, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-
+import { Fragment } from 'react';
 import EventSummary from '../../components/event-detail/event-summary';
 import EventLogistics from '../../components/event-detail/event-logistics';
 import EventContent from '../../components/event-detail/event-content';
 import ErrorAlert from '../../components/ui/error-alert';
+import { getEventById, getAllEvents } from '../../helpers/api-util';
 
-function EventDetailPage() {
-  const router = useRouter();
-
-  const eventId = router.query.eventId;
-  const [event, setEvent] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-      setIsLoading(true);
-      fetch('https://nextjs-course-f2ad5-default-rtdb.firebaseio.com/events.json')
-          .then(response => response.json())
-          .then(data => {
-              for (const key in data) {
-                  if (data[key].id === eventId) {
-                      setEvent({
-                          id: key,
-                          title: data[key].title,
-                          description: data[key].description,
-                          location: data[key].location,
-                          date: data[key].date,
-                          image: data[key].image,
-                          isFeatured: data[key].isFeatured
-                      });
-                  }
-              }
-              setIsLoading(false);
-          });
-  }, []);
-
-  if (isLoading) {
-      return <p>Loading...</p>;
-  }
+function EventDetailPage(props) {
+  const event = props.selectedEvent;
 
   if (!event) {
     return (
@@ -64,3 +33,23 @@ function EventDetailPage() {
 }
 
 export default EventDetailPage;
+
+export async function getStaticProps(context) {
+  const eventId = context.params.eventId;
+  const event = await getEventById(eventId);
+
+  return {
+    props: {
+      selectedEvent: event
+    }
+  }
+}
+
+export async function getStaticPaths() {
+  const events = await getAllEvents();
+
+  return {
+    paths: events.map(event => ({ params: { eventId: event.id } })),
+    fallback: false
+  }
+}
