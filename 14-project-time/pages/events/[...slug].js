@@ -3,10 +3,11 @@ import EventList from '../../components/events/event-list';
 import ResultsTitle from '../../components/events/results-title';
 import Button from '../../components/ui/button';
 import ErrorAlert from '../../components/ui/error-alert';
+import { getAllEvents } from '../../helpers/api-util';
 
 function FilteredEventsPage(props) {
 
-  const { filteredEvents, hasError } = props;
+  const { filteredEvents, hasError, numYear, numMonth } = props;
 
   if (hasError) {
     return (
@@ -80,6 +81,8 @@ export async function getServerSideProps(context) {
   return {
     props: {
       filteredEvents: filteredEvents,
+      numYear: numYear,
+      numMonth: numMonth,
     },
   };
 }

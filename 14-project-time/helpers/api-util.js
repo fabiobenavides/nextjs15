@@ -1,15 +1,14 @@
-const EVENTS = [];
+
 
 export async function getFeaturedEvents() {
-    if (EVENTS.length === 0) {
-        await getAllEvents();
-    }
+    const EVENTS =  await getAllEvents();
     return EVENTS.filter((event) => event.isFeatured);
 }
   
 export async function getAllEvents() {
     const response = await fetch('https://nextjs-course-f2ad5-default-rtdb.firebaseio.com/events.json');
     const data = await response.json();
+    const EVENTS =  [];
     
     for (const key in data) {
         EVENTS.push({
@@ -21,8 +20,6 @@ export async function getAllEvents() {
 }
 
 export async function getEventById(id) {
-    if (EVENTS.length === 0) {
-        await getAllEvents();
-    }
+    const EVENTS =  await getAllEvents();
     return EVENTS.find((event) => event.id === id);
-  }
+}
