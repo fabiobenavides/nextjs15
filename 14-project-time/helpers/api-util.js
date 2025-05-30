@@ -1,25 +1,25 @@
 
 
 export async function getFeaturedEvents() {
-    const EVENTS =  await getAllEvents();
-    return EVENTS.filter((event) => event.isFeatured);
+    const events =  await getAllEvents();
+    return events.filter((event) => event.isFeatured);
 }
   
 export async function getAllEvents() {
     const response = await fetch('https://nextjs-course-f2ad5-default-rtdb.firebaseio.com/events.json');
     const data = await response.json();
-    const EVENTS =  [];
+    const events =  [];
     
     for (const key in data) {
-        EVENTS.push({
+        events.push({
             id: key,
             ...data[key]
         });
     }
-    return EVENTS;
+    return events;
 }
 
 export async function getEventById(id) {
-    const EVENTS =  await getAllEvents();
-    return EVENTS.find((event) => event.id === id);
+    const events =  await getAllEvents();
+    return events.find((event) => event.id === id);
 }
