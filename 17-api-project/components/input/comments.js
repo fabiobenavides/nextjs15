@@ -6,6 +6,7 @@ import classes from './comments.module.css';
 
 function Comments(props) {
   const { eventId } = props;
+  const [comments, setComments] = useState(props.comments || []);
 
   const [showComments, setShowComments] = useState(false);
 
@@ -14,7 +15,39 @@ function Comments(props) {
   }
 
   function addCommentHandler(commentData) {
+
+    const { email: enteredEmail, name: enteredName, text: enteredComment } = commentData;
+
     // send data to API
+    fetch('/api/comments', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: enteredEmail,
+        name: enteredName,
+        text: enteredComment,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      if (data.error) {
+        alert(data.error);
+      } else {
+        alert('Comment added successfully!');
+        emailInputRef.current.value = '';
+        nameInputRef.current.value = '';
+        commentInputRef.current.value = '';
+        setIsInvalid(false);
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert('There was an error adding your comment. Please try again later.');
+    });
+    
   }
 
   return (
@@ -23,7 +56,7 @@ function Comments(props) {
         {showComments ? 'Hide' : 'Show'} Comments
       </button>
       {showComments && <NewComment onAddComment={addCommentHandler} />}
-      {showComments && <CommentList />}
+      {showComments && <CommentList comments={comments} />}
     </section>
   );
 }

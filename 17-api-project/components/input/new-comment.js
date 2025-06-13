@@ -33,10 +33,12 @@ function NewComment(props) {
       name: enteredName,
       text: enteredComment,
     });
+
+    
   }
 
   return (
-    <form className={classes.form}>
+    <form onSubmit={sendCommentHandler} className={classes.form}>
       <div className={classes.row}>
         <div className={classes.control}>
           <label htmlFor='email'>Your email</label>

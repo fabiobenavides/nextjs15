@@ -1,12 +1,47 @@
+import { useRef } from 'react';
 import classes from './newsletter-registration.module.css';
 
 function NewsletterRegistration() {
+
+  const emailInputRef = useRef();
+
+
   function registrationHandler(event) {
     event.preventDefault();
 
     // fetch user input (state or refs)
+    const enteredEmail = emailInputRef.current.value;
+
     // optional: validate input
+    // Validar email con regex
+    const emailIsValid = /^\S+@\S+\.\S+$/.test(enteredEmail);
+    if (!emailIsValid) {
+      alert('Por favor, introduce un email válido.');
+      return;
+    }
     // send valid data to API
+    fetch('/api/newsletter', {
+      method: 'POST',
+      body: JSON.stringify({ email: enteredEmail }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      if (data.error) {
+        alert(data.error);
+      } else {
+        alert('Registration successful!');
+        emailInputRef.current.value = ''; // Clear the input field after successful registration
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('There was an error with your registration. Please try again later.');
+    });
+
   }
 
   return (
@@ -17,6 +52,7 @@ function NewsletterRegistration() {
           <input
             type='email'
             id='email'
+            ref={emailInputRef}
             placeholder='Your email'
             aria-label='Your email'
           />
