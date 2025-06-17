@@ -19,7 +19,7 @@ function Comments(props) {
     const { email: enteredEmail, name: enteredName, text: enteredComment } = commentData;
 
     // send data to API
-    fetch('/api/comments', {
+    fetch(`/api/comments/${eventId}`, {
       method: 'POST',
       body: JSON.stringify({
         email: enteredEmail,
@@ -36,11 +36,9 @@ function Comments(props) {
       if (data.error) {
         alert(data.error);
       } else {
-        alert('Comment added successfully!');
-        emailInputRef.current.value = '';
-        nameInputRef.current.value = '';
-        commentInputRef.current.value = '';
-        setIsInvalid(false);
+        //alert('Comment added successfully!');
+        setComments((prevComments) => [data.comment, ...prevComments]);
+        console.log(data.comment);
       }
     })
     .catch((error) => {
