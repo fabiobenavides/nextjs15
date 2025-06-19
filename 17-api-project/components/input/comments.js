@@ -19,6 +19,12 @@ function Comments(props) {
     const { email: enteredEmail, name: enteredName, text: enteredComment } = commentData;
 
     // send data to API
+    console.log('Adding comment:', {
+      eventId,
+      email: enteredEmail,
+      name: enteredName,
+      text: enteredComment,
+    });
     fetch(`/api/comments/${eventId}`, {
       method: 'POST',
       body: JSON.stringify({

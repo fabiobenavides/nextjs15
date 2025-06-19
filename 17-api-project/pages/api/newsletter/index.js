@@ -8,8 +8,14 @@ export default function handler(req, res) {
 
 }
 
-export function processNewsletter(req, res) {
+
+function processNewsletter(req, res) {
   const email = req.body.email;
+
+  if (!email || !email.includes('@')) {
+    res.status(422).json({message: 'Invalid email address!'});
+    return;
+  }
 
   console.log(email);
   const newNewsletter = {

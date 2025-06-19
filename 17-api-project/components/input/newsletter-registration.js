@@ -5,18 +5,16 @@ function NewsletterRegistration() {
 
   const emailInputRef = useRef();
 
-
   function registrationHandler(event) {
     event.preventDefault();
 
     // fetch user input (state or refs)
     const enteredEmail = emailInputRef.current.value;
 
-    // optional: validate input
-    // Validar email con regex
+    // regex validation
     const emailIsValid = /^\S+@\S+\.\S+$/.test(enteredEmail);
     if (!emailIsValid) {
-      alert('Por favor, introduce un email válido.');
+      alert('Email invalid, please try with a valid one.');
       return;
     }
     // send valid data to API

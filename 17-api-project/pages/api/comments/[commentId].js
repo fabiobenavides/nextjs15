@@ -10,8 +10,9 @@ export default function handler(req, res) {
 
 export function processComment(req, res) {
   const { email, name, text } = req.body;
+  const commentId = req.query.commentId;
 
-  console.log(email, name, text);
+  console.log(commentId, email, name, text);
   const newComment = {
     id: new Date().toISOString(),
     email,
