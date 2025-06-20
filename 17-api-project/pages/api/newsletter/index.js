@@ -29,7 +29,7 @@ async function processNewsletter(req, res) {
   }
 
   // Connect to MongoDB
-  const client = await MongoClient.connect("mongodb+srv://fabiobenavides:38jDrbs9G8fUdfSV@fbreactcluster0.uhi0mzv.mongodb.net/?retryWrites=true&w=majority&appName=FBReactCluster0");
+  const client = await MongoClient.connect();
 
   console.log('Connected to MongoDB');
   // Use the database
