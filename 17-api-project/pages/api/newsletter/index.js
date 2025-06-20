@@ -1,3 +1,5 @@
+import { MongoClient } from 'mongodb';
+
 export default function handler(req, res) {
 
   if (req.method === 'POST') {
@@ -9,7 +11,10 @@ export default function handler(req, res) {
 }
 
 
-function processNewsletter(req, res) {
+
+
+
+async function processNewsletter(req, res) {
   const email = req.body.email;
 
   if (!email || !email.includes('@')) {
@@ -23,10 +28,21 @@ function processNewsletter(req, res) {
     email
   }
 
-  /*const filePath = buildNewsletterPath();
-  const data = extractNewsletter(filePath);
-  data.push(newNewsletter);
-  fs.writeFileSync(filePath, JSON.stringify(data));*/
+  // Connect to MongoDB
+  const client = await MongoClient.connect("mongodb+srv://fabiobenavides:38jDrbs9G8fUdfSV@fbreactcluster0.uhi0mzv.mongodb.net/?retryWrites=true&w=majority&appName=FBReactCluster0");
+
+  console.log('Connected to MongoDB');
+  // Use the database
+  const db = client.db('newsletterDB'); 
+  // Use the collection
+  const collection = db.collection('subscribers');  
+  // Insert the new newsletter entry
+  await collection.insertOne({email});
+
+  console.log('Newsletter entry added');
+  // Close the connection
+  await client.close();
+  console.log('MongoDB connection closed');
 
   res.status(201).json({message: 'Success!', newsletter: newNewsletter});
 }
