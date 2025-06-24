@@ -10,10 +10,6 @@ export default function handler(req, res) {
 
 }
 
-
-
-
-
 async function processNewsletter(req, res) {
   const email = req.body.email;
 
@@ -29,13 +25,13 @@ async function processNewsletter(req, res) {
   }
 
   // Connect to MongoDB
-  const client = await MongoClient.connect();
+  const client = await MongoClient.connect(); //events
 
   console.log('Connected to MongoDB');
   // Use the database
-  const db = client.db('newsletterDB'); 
+  const db = client.db(); 
   // Use the collection
-  const collection = db.collection('subscribers');  
+  const collection = db.collection('newsletter');  
   // Insert the new newsletter entry
   await collection.insertOne({email});
 
