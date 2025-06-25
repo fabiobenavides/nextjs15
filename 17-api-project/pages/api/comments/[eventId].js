@@ -71,8 +71,9 @@ async function processGetcomment(eventId, req, res) {
     return;
   }
 
+  let results;
   try {
-    const results = await getAllDocuments(client, 'comments', { _id: -1 });
+    results = await getAllDocuments(client, 'comments', { _id: -1 }, { eventId: eventId });
   } catch (error) {
     console.error('Database query failed:', error);
     res.status(500).json({message: 'Could not retrieve comments.'});
