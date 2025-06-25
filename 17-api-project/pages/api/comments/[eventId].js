@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { connectToDatabase, insertDocument, getAllDocuments } from '../../../helpers/db-util';
 
 export default async function handler(req, res) {
 
@@ -30,38 +30,56 @@ async function processComment(eventId, req, res) {
     eventId
   };
 
-  // Connect to MongoDB
-  const client = await MongoClient.connect(); //events 
+  let client;
+  try {
+    // Validate the comment data  
+    client = await connectToDatabase();
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    res.status(500).json({message: 'Could not connect to database.'});
+    return;
+  }
 
-  console.log('Connected to MongoDB');
-  // Use the database
-  const db = client.db(); 
-  // Use the collection
-  const collection = db.collection('comments');  
-  const result = await collection.insertOne(newComment);
+  try {
+    
+    // Insert the new comment
+    const result = await insertDocument(client, 'comments', newComment);
+    newComment._id = result.insertedId.toString()
+    
+  } catch (error) {
 
-  newComment.id = result.insertedId.toString();
+    console.error('Database insert failed:', error);
+    res.status(500).json({message: 'Could not insert a new comment.'});
+    return;
 
-  await client.close();
+  } finally {
+    await client.close();
+  }
+  
   res.status(201).json({message: 'Success!', comment: newComment});
 }
 
 async function processGetcomment(eventId, req, res) {
   
-  // Connect to MongoDB
-  const client = await MongoClient.connect(); //events 
+  let client;
+  try {
+    // Validate the comment data  
+    client = await connectToDatabase();
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    res.status(500).json({message: 'Could not connect to database.'});
+    return;
+  }
 
-  console.log('Connected to MongoDB');
-  // Use the database
-  const db = client.db(); 
-  // Use the collection
-  const collection = db.collection('comments');  
-
-  const results = await collection
-    .find({eventId: eventId})
-    .sort({ _id: -1 })
-    .toArray();
-
+  try {
+    const results = await getAllDocuments(client, 'comments', { _id: -1 });
+  } catch (error) {
+    console.error('Database query failed:', error);
+    res.status(500).json({message: 'Could not retrieve comments.'});
+    return;
+  } finally {
+    await client.close();
+  }  
 
   res.status(200).json({ comments: results });
 }

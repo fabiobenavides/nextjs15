@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { connectToDatabase, insertDocument } from '../../../helpers/db-util';
 
 export default function handler(req, res) {
 
@@ -19,26 +19,31 @@ async function processNewsletter(req, res) {
   }
 
   console.log(email);
-  const newNewsletter = {
-    id: new Date().toISOString(),
-    email
+
+  let client;
+  try {
+    // Validate the comment data  
+    client = await connectToDatabase();
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    res.status(500).json({message: 'Could not connect to database.'});
+    return;
   }
 
-  // Connect to MongoDB
-  const client = await MongoClient.connect(); //events
+  try {
+    
+    // Insert the new comment
+    await insertDocument(client, 'newsletter', {email});
+    
+  } catch (error) {
 
-  console.log('Connected to MongoDB');
-  // Use the database
-  const db = client.db(); 
-  // Use the collection
-  const collection = db.collection('newsletter');  
-  // Insert the new newsletter entry
-  await collection.insertOne({email});
+    console.error('Database insert failed:', error);
+    res.status(500).json({message: 'Could not insert a new email.'});
+    return;
 
-  console.log('Newsletter entry added');
-  // Close the connection
-  await client.close();
-  console.log('MongoDB connection closed');
+  } finally {
+    await client.close();
+  }
 
-  res.status(201).json({message: 'Success!', newsletter: newNewsletter});
+  res.status(201).json({message: 'Success!'});
 }
