@@ -31,7 +31,7 @@ async function processComment(eventId, req, res) {
   };
 
   // Connect to MongoDB
-  const client = await MongoClient.connect("mongodb+srv://fabiobenavides:38jDrbs9G8fUdfSV@fbreactcluster0.uhi0mzv.mongodb.net/events?retryWrites=true&w=majority&appName=FBReactCluster0"); //events 
+  const client = await MongoClient.connect(); //events 
 
   console.log('Connected to MongoDB');
   // Use the database
