@@ -1,12 +1,20 @@
-import { useRef } from 'react';
+import { useRef, useContext, use } from 'react';
 import classes from './newsletter-registration.module.css';
+import NotificationContext from '../../store/notification-context';
 
 function NewsletterRegistration() {
 
   const emailInputRef = useRef();
+  const notificationCtx = useContext(NotificationContext);
 
   function registrationHandler(event) {
     event.preventDefault();
+
+    notificationCtx.showNotification({
+      title: 'Signing up...',
+      message: 'Registering for newsletter',
+      status: 'pending'
+    });
 
     // fetch user input (state or refs)
     const enteredEmail = emailInputRef.current.value;
@@ -25,19 +33,49 @@ function NewsletterRegistration() {
         'Content-Type': 'application/json'
       }
     })
-    .then(response => response.json())
+    // 40X codes and 50X codes are not caught by the fetch API, so we need to handle them manually
+    // 40X codes are client errors, 50X codes are server errors
+    // fetch will not throw an error for these codes, so we need to check the response status
+    // if the response is not ok, we throw an error
+    // then we catch the error and show a notification
+    // if the response is ok, we parse the response as JSON and show a success notification
+    // if the response is not ok, we parse the response as JSON and show an error notification
+    // if there is an error in the fetch request, we catch it and show an error notification
+    // this way we can handle all possible errors and show appropriate notifications
+    .then(response => {
+      if (response.ok) { 
+        return response.json()
+      }
+      
+      return response.json().then((data) => {
+        throw new Error (data.message || 'Something went wrong!');
+      });
+    })
     .then(data => {
       console.log(data)
       if (data.error) {
-        alert(data.error);
+        notificationCtx.showNotification({
+          title: 'Error!',
+          message: data.error,
+          status: 'error'
+        });
       } else {
-        alert('Registration successful!');
-        emailInputRef.current.value = ''; // Clear the input field after successful registration
+        notificationCtx.showNotification({
+          title: 'Success!',
+          message: 'Successfully registered for the newsletter!',
+          status: 'success'
+        });
+        // Clear the input field after successful registration
+        emailInputRef.current.value = '';
       }
     })
     .catch(error => {
       console.error('Error:', error);
-      alert('There was an error with your registration. Please try again later.');
+      notificationCtx.showNotification({
+        title: 'Error!',
+        message: 'Registration failed, please try again later.',
+        status: 'error'
+      });
     });
 
   }
