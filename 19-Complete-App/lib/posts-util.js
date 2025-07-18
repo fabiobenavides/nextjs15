@@ -7,9 +7,8 @@ const postsDirectory = path.join(process.cwd(), 'posts');
 function getPostData(fileName) {
     
     const filePath = path.join(postsDirectory, fileName);
-    const fileContentType = fs.readFileSync(filePath, 'utf-8');
 
-    const fileContent = fs.readFileSync(filePath, fileContentType);
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
 
     const { data, content } = matter(fileContent);
 
@@ -24,7 +23,7 @@ function getPostData(fileName) {
     return postData;
 }
 
-function getAllPosts() {
+export function getAllPosts() {
 
     const postFiles = fs.readdirSync(postsDirectory);
 
@@ -35,4 +34,10 @@ function getAllPosts() {
     return allPosts.sort((postA, postB) => {
         return new Date(postB.date) - new Date(postA.date);
     });
+}
+
+export function getFeaturedPosts() {
+    const allPosts = getAllPosts();
+
+    return allPosts.filter(post => post.isFeatured);
 }
