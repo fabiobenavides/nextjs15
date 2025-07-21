@@ -1,22 +1,20 @@
 import AllPosts from '../../components/posts/all-posts'
+import { getAllPosts } from '../../lib/posts-util';
 
-export default function AllPostsPage() {
+export default function AllPostsPage(props) {
+
   return (
-    <AllPosts posts={[
-            {
-                title: 'First Post',
-                image: 'image1.png',
-                excerpt: 'This is the first post excerpt.',
-                date: '2023-10-01',
-                slug: 'first-post'
-            },
-            {
-                title: 'Second Post',
-                image: 'image2.png',
-                excerpt: 'This is the second post excerpt.',
-                date: '2023-10-02',
-                slug: 'second-post'
-            }
-    ]} />
+    <AllPosts posts={props.posts} />
   )
+}
+
+export async function getStaticProps() {
+  const allPosts = getAllPosts();
+
+  return {
+    props: {
+      posts: allPosts
+    },
+    revalidate: 1800 // Revalidate every 30 minutes
+  }
 }
