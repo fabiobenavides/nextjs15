@@ -31,10 +31,10 @@ async function sendContactData(req, res) {
         return res.status(500).json({ message: 'Database connection failed' });
     }
     
-    const db = client.db;
+    const db = client.db();
 
     try {
-            const result = await db.collection('messages').insertOne({
+            const result = await db.collection('contact').insertOne({
                 email,
                 name,
                 message,
@@ -46,5 +46,7 @@ async function sendContactData(req, res) {
         return res.status(500).json({ message: 'Failed to insert message' });
     }
     
+    client.close();
+
     res.status(201).json({ message: 'Message sent successfully!' });
 }
