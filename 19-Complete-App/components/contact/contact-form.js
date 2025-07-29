@@ -1,14 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classes from './contact-form.module.css';
+import Notification from '../ui/notification';
+
+async function sendContactData(contactDetails) {
+    const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(contactDetails)
+    });
+
+    const data = await response.json();
+    if (!response.ok) { 
+        throw new Error(data.message || 'Something went wrong!');
+    }       
+}
 
 export default function ContactForm() {
 
     const [enteredName, setEnteredName] = useState('');
     const [enteredEmail, setEnteredEmail] = useState('');
     const [enteredMessage, setEnteredMessage] = useState('');
+    const [status, setStatus] = useState(); // 'pending', 'success', 'error'
+    const [reqError, setReqError] = useState();
+
+    useEffect(() => {
+        if (status === 'success' || status === 'error') {
+            const timer = setTimeout(() => {
+                setStatus(null);
+                setReqError(null);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [status]);
 
     const submitHandler = async (event) => {
         event.preventDefault();
+
+        setStatus('pending');
 
         const contactData = {
             name: enteredName,
@@ -16,23 +46,42 @@ export default function ContactForm() {
             message: enteredMessage
         };
 
-        const response = await fetch('/api/contact', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(contactData)
-        });
-
-        const data = await response.json();
-        if (!response.ok) { 
-            throw new Error(data.message || 'Something went wrong!');
-        }       
-
-        console.log(data);
-        // Optionally, you can reset the form or show a success message 
-        event.target.reset();
+        try {
+            await sendContactData(contactData);
+            setStatus('success');
+            setEnteredName('');
+            setEnteredEmail('');
+            setEnteredMessage('');
+        } catch (error) {
+            setStatus('error');
+            setReqError(error.message || 'Something went wrong!');
+            console.error('Failed to send contact data:', error);
+        }
     };
+
+    let notification;
+
+    if (status === 'pending') {
+        notification = {
+            status: 'pending',
+            title: 'Sending message...',
+            message: 'Your message is being sent!'
+        };
+    }
+    if (status === 'success') {
+        notification = {
+            status: 'success',
+            title: 'Success!',
+            message: 'Message sent successfully!'
+        };
+    }
+    if (status === 'error') {
+        notification = {
+            status: 'error',
+            title: 'Error!',
+            message: reqError
+        };
+    }
 
 
   return (
@@ -68,6 +117,12 @@ export default function ContactForm() {
                 <button>Send Message</button>
             </div>
         </form>
+        {notification && <Notification 
+            status={notification.status} 
+            title={notification.title} 
+            message={notification.message}
+            />
+        }
     </section>
       
   )
