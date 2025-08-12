@@ -68,3 +68,6 @@ getStaticProps:
   This is useful for data that doesn't change often, like a blog post or a product page.
   You can add a revalidate property to the returned object to specify how often the page should be re-generated.
 
+
+
+  "export": "next export" //Prodce 100% static HTML files / No server needed / Bt not for dynamic pages, API routes, or server-side rendering
