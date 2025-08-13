@@ -23,8 +23,10 @@ async function sendContactData(req, res) {
 
     let client;
 
+    const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}/${process.env.mongodb_database}?retryWrites=true&w=majority`;
+
     try {
-        client = await MongoClient.connect(process.env.MONGODB_URI);
+        client = await MongoClient.connect(connectionString);
         client.connect();
     } catch (error) {
         console.error('Database connection failed:', error);
