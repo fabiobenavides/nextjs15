@@ -62,12 +62,85 @@ FORMs:
   nextjs 15:
   useActionState
 
+useState -> state
+useEffect -> life cycle
 
-getStaticProps:
-  This will run on the server at build time, and the result will be cached for the lifetime of the app. 
-  This is useful for data that doesn't change often, like a blog post or a product page.
-  You can add a revalidate property to the returned object to specify how often the page should be re-generated.
+-------------------
+
+"export": "next export" //Prodce 100% static HTML files / No server needed / Bt not for dynamic pages, API routes, or server-side rendering
+
+Pre-rendering:
+
+1- Static Generation:
+	Pre-render at build time, and the result will be cached for the lifetime of the app. 
+	This is useful for data that doesn't change often, like a blog post or a product page.
+    You can add a revalidate property to the returned object to specify how often the page should be re-generated.
+
+    //only in component files, inside the pages folder
+	export async fuction getStaticProps (context) {
+		//execute any code
+    const meetpupId = context.params.meetupId;
+    //fetch data for a single meetup
+
+		//return an object like: 
+    return {
+      props: {
+        //object with the properties expected
+      },
+      revalidate:  10 //Seconds
+    }
+  }
+
+  //needed for getStaticProps with dynamic routes
+  //return all the possible values for the dynamic part of the URL
+  export async fuction getStaticPaths (only in component files, inside the pages folder) {
+    //execute any code
+    //we can fetch all meetups to return an array of their IDs
+    //return an object like:  
+    return {
+      paths: [
+        { params: { meetupId: '1' } },  
+        { params: { meetupId: '2' } }
+      ],
+      fallback: false //or true or 'blocking'
+      //false: any paths not returned by getStaticPaths will result in a 404 page
+      //true: the behavior is the same as false, but the page will be generated on the fly in the first request
+      //'blocking': the user won't see anything until the page is generated, then it will be cached
+    } 
+  }
+
+	
+2- Server-side rendering:
+	
+	Always right on the server, never on the client
+  for any incoming request
+  Useful for data that changes often, like a user profile or a dashboard.
+  You can add a cache property to the fetch request to specify how the data should be cached.
+
+	
+	export async fuction getServerSideProps(context) {
+
+    //Access request and response objects
+    const req = context.req;
+    const res = context.res;
+
+    return {
+      props: {
+        // props for your component
+      },
+    }
+  }
+	
+-------------------
+
+API routes:
+
+pages/api/
+
+Only server side code
+Can be used to handle form submissions, 
+interact with a database, 
+or perform any other server-side logic.
 
 
-
-  "export": "next export" //Prodce 100% static HTML files / No server needed / Bt not for dynamic pages, API routes, or server-side rendering
+  
