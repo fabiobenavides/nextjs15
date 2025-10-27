@@ -52,18 +52,17 @@ export const getMessages = cache(function getMessages() {
   return db.prepare('SELECT * FROM messages').all();
 });
 
+-------------------
+Hooks:
 
-
-FORMs:
-
-  nextjs 14:
-  useFormState
-
-  nextjs 15:
-  useActionState
-
-useState -> state
-useEffect -> life cycle
+  useState -> state
+  useEffect -> life cycle
+  useRouter -> navigation (router.push, router.replace, etc) //replace current history entry (no back possible)
+  useSearchParams -> read query string
+  usePathname -> read current path
+  useParams -> read dynamic route values
+  useTransition -> for pending state when doing something async (like a form submission)
+  useFormState (nextjs 14) / useActionState (nextjs 15) -> for form submission state
 
 -------------------
 
@@ -143,4 +142,5 @@ interact with a database,
 or perform any other server-side logic.
 
 
-  
+-------------------
+
