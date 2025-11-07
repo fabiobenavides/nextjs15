@@ -144,3 +144,7 @@ or perform any other server-side logic.
 
 -------------------
 
+
+React router:
+
+react-router-dom (for client side rendering)
